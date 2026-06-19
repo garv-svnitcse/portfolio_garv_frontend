@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../components/Button";
-import AnimatedBorderButton from "../components/animatedBorderButton";
+import AnimatedBorderButton from "../components/AnimatedBorderButton";
 import {
   ArrowRight,
   Download,
