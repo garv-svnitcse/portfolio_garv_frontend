@@ -1,39 +1,89 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0f1418;
-  --color-foreground: #f0f2f5;
+  --color-background: var(--background-theme);
+  --color-foreground: var(--foreground-theme);
 
-  --color-card: #141a1f;
+  --color-card: var(--card-theme);
 
-  --color-primary: #20b2a6;
-  --color-primary-foreground: #ffffff;
+  --color-primary: var(--primary-theme);
+  --color-primary-foreground: var(--primary-foreground-theme);
 
-  --color-secondary: #1f2830;
-  --color-secondary-foreground: #20b2a6;
+  --color-secondary: var(--secondary-theme);
+  --color-secondary-foreground: var(--secondary-foreground-theme);
 
-  --color-muted: #252e37;
-  --color-muted-foreground: #7a8491;
+  --color-muted: var(--muted-theme);
+  --color-muted-foreground: var(--muted-foreground-theme);
 
-  --color-border: #242b32;
+  --color-border: var(--border-theme);
 
   --radius: 0.75rem;
 
   --color-highlight: #f5a623;
-  --color-surface: #1a2329;
+  --color-surface: var(--surface-theme);
+
+  /* Theme color mapping aliases */
+  --bg-main: var(--color-background);
+  --text-main: var(--color-foreground);
+  --accent-teal: var(--color-primary);
+  --text-muted: var(--color-muted-foreground);
+  --border-color: var(--color-border);
+  --bg-card: var(--color-card);
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
 }
 
 @layer base {
-  html{
-    scroll-behavior: smooth;
-  }
-  body{
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    font-family: "Inter",sans-serif;
+  :root {
+    --background-theme: #0f1418;
+    --foreground-theme: #f0f2f5;
+    --card-theme: #141a1f;
+    --primary-theme: #20b2a6;
+    --primary-foreground-theme: #ffffff;
+    --secondary-theme: #1f2830;
+    --secondary-foreground-theme: #20b2a6;
+    --muted-theme: #252e37;
+    --muted-foreground-theme: #7a8491;
+    --border-theme: #242b32;
+    --surface-theme: #1a2329;
   }
 
-  .font-serif{
+  :root.light {
+    --background-theme: #f8fafc;
+    --foreground-theme: #0f172a;
+    --card-theme: #ffffff;
+    --primary-theme: #0d9488;
+    --primary-foreground-theme: #ffffff;
+    --secondary-theme: #f1f5f9;
+    --secondary-foreground-theme: #0d9488;
+    --muted-theme: #e2e8f0;
+    --muted-foreground-theme: #64748b;
+    --border-theme: #cbd5e1;
+    --surface-theme: #f1f5f9;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: "Inter", sans-serif;
+  }
+
+  body, header, footer, section, .glass, .glass-strong, input, textarea, button {
+    transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .font-serif {
     font-family: "Playfair Display", serif;
   }
 }

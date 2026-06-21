@@ -1,5 +1,5 @@
 import { Code2, Lightbulb, Rocket, Award, GraduationCap } from "lucide-react";
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 const highlights = [
@@ -20,40 +20,73 @@ const highlights = [
   },
 ];
 
-// Premium interactive card wrapper featuring dynamic cursor gradient mapping
+// Premium interactive card wrapper featuring dynamic cursor gradient mapping and 3D tilt
 const SpotlightCard = ({ children, delay }) => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  function handleMouseMove({ currentTarget, clientX, clientY }) {
-    let { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
+  // Motion values for tilt (normalized between -0.5 and 0.5)
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+
+  // Springs for smooth tilting
+  const rotateX = useSpring(useTransform(tiltY, [-0.5, 0.5], [10, -10]), { stiffness: 150, damping: 20 });
+  const rotateY = useSpring(useTransform(tiltX, [-0.5, 0.5], [-10, 10]), { stiffness: 150, damping: 20 });
+
+  function handleMouseMove(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    
+    // Spotlight position
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+
+    // Tilt calculations
+    const curX = e.clientX - rect.left - width / 2;
+    const curY = e.clientY - rect.top - height / 2;
+    tiltX.set(curX / width);
+    tiltY.set(curY / height);
+  }
+
+  function handleMouseLeave() {
+    tiltX.set(0);
+    tiltY.set(0);
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: delay }}
-      onMouseMove={handleMouseMove}
-      className="group relative rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] p-6 backdrop-blur-xl transition-all duration-300 hover:border-[var(--accent-teal)]/30 overflow-hidden"
-    >
+    <div className="perspective-1000">
       <motion.div
-        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: delay }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
         style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              250px circle at ${mouseX}px ${mouseY}px,
-              rgba(32, 178, 166, 0.12),
-              transparent 80%
-            )
-          `,
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
         }}
-      />
-      {children}
-    </motion.div>
+        className="group relative rounded-2xl border border-[var(--border-color)] bg-[var(--bg-card)] p-6 backdrop-blur-xl transition-all duration-300 hover:border-[var(--accent-teal)]/30 overflow-hidden hover:shadow-[0_0_35px_rgba(32,178,166,0.15)]"
+      >
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
+          style={{
+            background: useMotionTemplate`
+              radial-gradient(
+                250px circle at ${mouseX}px ${mouseY}px,
+                rgba(32, 178, 166, 0.12),
+                transparent 80%
+              )
+            `,
+          }}
+        />
+        <div style={{ transform: "translateZ(15px)", transformStyle: "preserve-3d" }}>
+          {children}
+        </div>
+      </motion.div>
+    </div>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
+import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { 
   Server, 
   Terminal, 
@@ -169,30 +169,75 @@ const ProjectCardWrapper = ({ children }) => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  function handleMouseMove({ currentTarget, clientX, clientY }) {
-    let { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
+  // Motion values for tilt (normalized between -0.5 and 0.5)
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+
+  // Springs for smooth tilting
+  const rotateX = useSpring(useTransform(tiltY, [-0.5, 0.5], [6, -6]), { stiffness: 150, damping: 20 });
+  const rotateY = useSpring(useTransform(tiltX, [-0.5, 0.5], [-6, 6]), { stiffness: 150, damping: 20 });
+
+  // Glossy sheen reflection offset
+  const sheenX = useSpring(useTransform(tiltX, [-0.5, 0.5], ["0%", "100%"]), { stiffness: 150, damping: 20 });
+  const sheenY = useSpring(useTransform(tiltY, [-0.5, 0.5], ["0%", "100%"]), { stiffness: 150, damping: 20 });
+
+  function handleMouseMove(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    
+    // Spotlight position
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+
+    // Tilt coordinates
+    tiltX.set((e.clientX - rect.left - width / 2) / width);
+    tiltY.set((e.clientY - rect.top - height / 2) / height);
+  }
+
+  function handleMouseLeave() {
+    tiltX.set(0);
+    tiltY.set(0);
   }
 
   return (
-    <div
-      onMouseMove={handleMouseMove}
-      className="group relative rounded-2xl border border-white/5 bg-slate-900/40 p-6 backdrop-blur-xl transition-all duration-300 hover:border-[#20B2A6]/30 overflow-hidden"
-    >
+    <div className="perspective-1000">
       <motion.div
-        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
         style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              350px circle at ${mouseX}px ${mouseY}px,
-              rgba(32, 178, 166, 0.12),
-              transparent 80%
-            )
-          `,
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
         }}
-      />
-      {children}
+        className="group relative rounded-2xl border border-white/5 bg-slate-900/40 p-6 backdrop-blur-xl transition-all duration-300 hover:border-[#20B2A6]/30 overflow-hidden hover:shadow-[0_20px_45px_rgba(32,178,166,0.15)]"
+      >
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
+          style={{
+            background: useMotionTemplate`
+              radial-gradient(
+                350px circle at ${mouseX}px ${mouseY}px,
+                rgba(32, 178, 166, 0.12),
+                transparent 80%
+              )
+            `,
+          }}
+        />
+        {/* Dynamic Sheen overlay */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-transparent via-white/5 to-transparent mix-blend-overlay rounded-2xl"
+          style={{
+            transform: "translateZ(10px)",
+            left: sheenX,
+            top: sheenY,
+            opacity: useTransform(tiltX, (val) => (val === 0 ? 0 : 0.45)),
+          }}
+        />
+        <div style={{ transform: "translateZ(15px)", transformStyle: "preserve-3d" }}>
+          {children}
+        </div>
+      </motion.div>
     </div>
   );
 };

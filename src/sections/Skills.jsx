@@ -111,7 +111,7 @@ export default function Skills() {
     <section
       id="skills"
       ref={sectionRef}
-      className="h-1/2 w-full pb-8 flex flex-col items-center justify-center relative bg-primary/10 text-white overflow-hidden"
+      className="h-1/2 w-full pb-8 flex flex-col items-center justify-center relative bg-primary/10 text-foreground overflow-hidden"
     >
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-0 w-[300px] h-[300px] rounded-full bg-gradient-to-r from-[#302b63] via-[#00bf8f] to-[#1cd8d2] opacity-20 blur-[120px] animate-pulse" />
@@ -127,7 +127,7 @@ export default function Skills() {
         My Skills
       </motion.h2>
       <motion.p
-        className="mt-2 mb-8 text-white/90 text-base sm:text-lg z-10"
+        className="mt-2 mb-8 text-muted-foreground text-base sm:text-lg z-10 font-medium"
         initial={{ opacity: 0, y: -10 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
@@ -135,23 +135,39 @@ export default function Skills() {
         Modern Applications | Data Science & ML | Modern Technologies
       </motion.p>
 
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden py-10 px-4">
+        {/* Shadow Overlays to create a fade-off effect on edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
         <motion.div
           ref={trackRef}
-          className="flex gap-10 text-6xl text-[#1cd8d2]"
+          className="flex gap-8"
           style={{ x, whiteSpace: "nowrap", willChange: "transform" }}
         >
           {repeated.map((s, i) => (
             <div
               key={i}
-              className="flex flex-col items-center gap-2 min-w-[120px]"
+              className="flex flex-col items-center justify-center p-6 min-w-[140px] aspect-square rounded-2xl glass-strong border border-white/5 backdrop-blur-md shadow-lg transition-all duration-500 hover:border-primary/50 hover:bg-primary/10 hover:-translate-y-3 hover:shadow-[0_20px_40px_rgba(32,178,166,0.25)] hover:rotate-0 hover:skew-0 cursor-pointer group"
+              style={{
+                transform: "perspective(800px) rotateX(12deg) rotateY(-10deg) skewX(-4deg)",
+                transformStyle: "preserve-3d",
+              }}
               aria-label={s.name}
               title={s.name}
             >
-              <span className="hover:scale-125 transition-transform duration-300">
+              <div 
+                className="text-5xl text-[#1cd8d2] group-hover:text-primary transition-colors duration-300 group-hover:scale-115"
+                style={{ transform: "translateZ(20px)" }}
+              >
                 {s.icon}
-              </span>
-              <p className="text-sm text-white">{s.name}</p>
+              </div>
+              <p 
+                className="text-xs font-mono tracking-wider font-semibold text-slate-400 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white mt-4 transition-colors"
+                style={{ transform: "translateZ(10px)" }}
+              >
+                {s.name}
+              </p>
             </div>
           ))}
         </motion.div>
