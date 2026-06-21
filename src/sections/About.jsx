@@ -164,14 +164,14 @@ const About = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="grid grid-cols-3 gap-4 pt-4 border-t border-[var(--border-color)]"
+              className="grid grid-cols-3 gap-2.5 sm:gap-4 pt-4 border-t border-[var(--border-color)]"
             >
               {stats.map((stat, i) => (
                 <div key={i} className="space-y-1">
                   <p className="text-2xl md:text-3xl font-bold tracking-tight text-[var(--accent-teal)]">
                     {stat.value}
                   </p>
-                  <p className="text-xs text-[var(--text-muted)] font-mono uppercase tracking-wider">{stat.label}</p>
+                  <p className="text-[9px] sm:text-xs text-[var(--text-muted)] font-mono uppercase tracking-wider leading-tight">{stat.label}</p>
                 </div>
               ))}
             </motion.div>

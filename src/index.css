@@ -86,6 +86,17 @@
   .font-serif {
     font-family: "Playfair Display", serif;
   }
+
+  .isometric-timeline {
+    transform: rotateX(12deg) rotateY(-4deg) rotateZ(-2deg);
+    transform-style: preserve-3d;
+  }
+
+  @media (max-width: 768px) {
+    .isometric-timeline {
+      transform: none !important;
+    }
+  }
 }
 
 @layer components{

@@ -125,7 +125,7 @@ const RoadmapCard = ({ item, index }) => {
           rotateY,
           transformStyle: "preserve-3d",
         }}
-        className="relative bg-card/60 backdrop-blur-xl border border-border/40 hover:border-primary/60 rounded-3xl p-8 shadow-[0_15px_35px_rgba(32,178,166,0.08)] hover:shadow-[0_25px_50px_rgba(32,178,166,0.2)] transition-all duration-300"
+        className="relative bg-card/60 backdrop-blur-xl border border-border/40 hover:border-primary/60 rounded-3xl p-6 md:p-8 shadow-[0_15px_35px_rgba(32,178,166,0.08)] hover:shadow-[0_25px_50px_rgba(32,178,166,0.2)] transition-all duration-300"
       >
         <div style={{ transform: "translateZ(20px)", transformStyle: "preserve-3d" }}>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold font-mono border border-primary/20">
@@ -196,13 +196,7 @@ const Experience = () => {
             perspective: "1200px",
           }}
         >
-          <div
-            className="relative"
-            style={{
-              transform: "rotateX(15deg) rotateY(-5deg) rotateZ(-2deg)",
-              transformStyle: "preserve-3d",
-            }}
-          >
+          <div className="relative isometric-timeline">
             {/* SVG Center Line (Vertical Road Path) */}
             <div className="absolute left-1/2 top-0 bottom-0 w-[4px] -translate-x-1/2 hidden md:block pointer-events-none">
               <svg 
@@ -292,7 +286,7 @@ const Experience = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-80px" }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
-                    className="md:hidden pl-10 relative"
+                    className="md:hidden pl-8 relative"
                   >
                     {/* Connecting dot */}
                     <div className="absolute left-1.5 top-8 w-5 h-5 rounded-full bg-background border-4 border-primary flex items-center justify-center shadow-[0_0_15px_rgba(32,178,166,0.8)] z-10">

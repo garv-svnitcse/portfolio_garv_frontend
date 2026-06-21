@@ -366,11 +366,11 @@ export default function Projects() {
                           animate={{ opacity: 1, scale: 1 }}
                           className="h-full flex flex-col justify-center space-y-6 py-4"
                         >
-                          <div className="grid grid-cols-3 gap-4 text-center">
+                          <div className="grid grid-cols-3 gap-2.5 sm:gap-4 text-center">
                             {Object.entries(project.telemetry).map(([key, val]) => (
-                              <div key={key} className="bg-slate-900/60 p-4 rounded-xl border border-white/5">
-                                <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">{key}</div>
-                                <div className="text-lg font-bold tracking-tight bg-gradient-to-r from-[#1cd8d2] to-[#00bf8f] bg-clip-text text-transparent">
+                              <div key={key} className="bg-slate-900/60 p-2 sm:p-4 rounded-xl border border-white/5 overflow-hidden">
+                                <div className="text-[9px] sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1 truncate">{key}</div>
+                                <div className="text-xs sm:text-sm md:text-lg font-bold tracking-tight bg-gradient-to-r from-[#1cd8d2] to-[#00bf8f] bg-clip-text text-transparent truncate" title={val}>
                                   {val}
                                 </div>
                               </div>
