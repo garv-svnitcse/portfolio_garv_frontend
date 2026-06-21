@@ -134,7 +134,7 @@ export const Contact = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {/* Contact Form */}
-          <div className="glass p-8 rounded-3xl border border-primary/20">
+          <div className="glass p-6 md:p-8 rounded-3xl border border-primary/20">
             <form
               onSubmit={handleSubmit}
               className="space-y-6"
@@ -257,7 +257,7 @@ export const Contact = () => {
 
           {/* Contact Info */}
           <div className="space-y-6">
-            <div className="glass rounded-3xl p-8">
+            <div className="glass rounded-3xl p-6 md:p-8">
               <h3 className="text-xl font-semibold mb-6">
                 Contact Information
               </h3>
@@ -290,7 +290,7 @@ export const Contact = () => {
             </div>
 
             {/* Availability */}
-            <div className="glass rounded-3xl p-8 border border-primary/20">
+            <div className="glass rounded-3xl p-6 md:p-8 border border-primary/20">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
 
